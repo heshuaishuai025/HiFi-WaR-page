@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HiFi-WaR - Project Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #0f172a;
+            --muted: #475569;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --border: #e2e8f0;
+        }
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--bg);
+            color: var(--muted);
+            line-height: 1.7;
+        }
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        h1, h2, h3 {
+            color: var(--secondary);
+            letter-spacing: -0.02em;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        h2 {
+            font-size: 1.65rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        h3 {
+            font-size: 1.2rem;
+        }
+        section {
+            background: var(--card);
+            border-radius: 18px;
+            padding: 32px;
+            margin-bottom: 32px;
+            border: 1px solid var(--border);
+            box-shadow: 0 15px 30px rgba(15, 23, 42, 0.05);
+        }
+        .authors {
+            color: #64748b;
+        }
+        .btn-group {
+            margin-top: 24px;
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-flex;
+            gap: 8px;
+            align-items: center;
+            padding: 10px 24px;
+            border-radius: 999px;
+            background: var(--primary);
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 15px 25px rgba(37, 99, 235, 0.2);
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        .btn.secondary {
+            background: var(--secondary);
+            box-shadow: none;
+        }
+        .motivation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+        .motivation-card {
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px;
+            background: #fff;
+        }
+        .motivation-thumbs {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+        .thumb-row {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .thumb-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+        .motivation-thumbs img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+        th {
+            background: #f1f5f9;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+        audio {
+            width: 100%;
+            min-width: 220px;
+            height: 40px;
+        }
+        .attack-badge {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 2px 8px;
+            border-radius: 999px;
+            margin-right: 8px;
+        }
+        .badge-common {
+            background: rgba(59, 130, 246, 0.12);
+            color: #1d4ed8;
+        }
+        .badge-advanced {
+            background: rgba(248, 113, 113, 0.15);
+            color: #b91c1c;
+        }
+        .attack-label {
+            font-weight: 600;
+            color: var(--secondary);
+        }
+        .hint {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-top: -10px;
+            margin-bottom: 20px;
+        }
+        code {
+            background: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+        .tab-bar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 20px 0 32px;
+        }
+        .tab-btn {
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: #fff;
+            padding: 10px 24px;
+            font-weight: 600;
+            color: var(--secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .tab-btn.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.15);
+        }
+        .tab-panel {
+            display: none;
+        }
+        .tab-panel.active {
+            display: block;
+        }
+        @media (max-width: 768px) {
+            section { padding: 24px; }
+            th, td { padding: 10px; }
+            audio { min-width: 160px; }
+            .tab-bar { gap: 8px; }
+            .tab-btn { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>HiFi-WaR</h1>
+        <p class="authors">Shuaishuai He<sup>1</sup>, Author Name 2<sup>2</sup>, Author Name 3<sup>1</sup><br><small><sup>1</sup>Northwest University &nbsp;|&nbsp; <sup>2</sup>Institution 2</small></p>
+        <div class="btn-group">
+            <a class="btn" href="https://github.com/heshuaishuai025/HiFi-WaR/blob/main/README.md" target="_blank">Project README</a>
+            <a class="btn secondary" href="https://github.com/heshuaishuai025/HiFi-WaR" target="_blank">GitHub</a>
+        </div>
+    </header>
+
+
+    <section id="motivation">
+        <h2>Motivation — Visual Evidence</h2>
+        <p>Visual comparison of waveform, mel-spectrogram, and spectral error maps between clean and watermarked audio. The spectral error maps (bottom row) reveal that different watermarking methods induce distinct, structured distortion patterns in the time-frequency domain.</p>
+        <div class="motivation-grid">
+            
+    <div class="motivation-card">
+        <h3>Timbre Watermark</h3>
+        <div class="motivation-thumbs">
+            <div class="thumb-row"><span class="thumb-label">Sample 1</span><img src='images/timbre/comparison_idx_0_aligned_time.png' alt='Timbre Watermark visualization'></div><div class="thumb-row"><span class="thumb-label">Sample 2</span><img src='images/timbre/comparison_idx_1_aligned_time.png' alt='Timbre Watermark visualization'></div><div class="thumb-row"><span class="thumb-label">Sample 3</span><img src='images/timbre/comparison_idx_2_aligned_time.png' alt='Timbre Watermark visualization'></div>
+        </div>
+    </div>
+    
+    <div class="motivation-card">
+        <h3>AudioSeal Watermark</h3>
+        <div class="motivation-thumbs">
+            <div class="thumb-row"><span class="thumb-label">Sample 1</span><img src='images/audioseal/comparison_idx_0_aligned_time.png' alt='AudioSeal Watermark visualization'></div><div class="thumb-row"><span class="thumb-label">Sample 2</span><img src='images/audioseal/comparison_idx_1_aligned_time.png' alt='AudioSeal Watermark visualization'></div><div class="thumb-row"><span class="thumb-label">Sample 3</span><img src='images/audioseal/comparison_idx_2_aligned_time.png' alt='AudioSeal Watermark visualization'></div>
+        </div>
+    </div>
+    
+    <div class="motivation-card">
+        <h3>WavMark Watermark</h3>
+        <div class="motivation-thumbs">
+            <div class="thumb-row"><span class="thumb-label">Sample 1</span><img src='images/wavmark/comparison_idx_0_aligned_time.png' alt='WavMark Watermark visualization'></div><div class="thumb-row"><span class="thumb-label">Sample 2</span><img src='images/wavmark/comparison_idx_1_aligned_time.png' alt='WavMark Watermark visualization'></div><div class="thumb-row"><span class="thumb-label">Sample 3</span><img src='images/wavmark/comparison_idx_2_aligned_time.png' alt='WavMark Watermark visualization'></div>
+        </div>
+    </div>
+    
+    <div class="motivation-card">
+        <h3>Groot Watermark</h3>
+        <div class="motivation-thumbs">
+            <div class="thumb-row"><span class="thumb-label">Sample 1</span><img src='images/groot/comparison_idx_0_aligned_time.png' alt='Groot Watermark visualization'></div><div class="thumb-row"><span class="thumb-label">Sample 2</span><img src='images/groot/comparison_idx_1_aligned_time.png' alt='Groot Watermark visualization'></div><div class="thumb-row"><span class="thumb-label">Sample 3</span><img src='images/groot/comparison_idx_2_aligned_time.png' alt='Groot Watermark visualization'></div>
+        </div>
+    </div>
+    
+        </div>
+    </section>
+
+    <div class="tab-bar">
+        <button class="tab-btn active" data-target="audio-timbre">Timbre</button>
+        <button class="tab-btn" data-target="audio-wavmark">WavMark</button>
+        <button class="tab-btn" data-target="audio-audioseal">AudioSeal</button>
+        <button class="tab-btn" data-target="audio-groot">Groot</button>
+    </div>
+
+    <section id="audio-timbre" class="audio-section tab-panel active">
+        <h2>Timbre Watermark (10-bit payload)</h2>
+      
+    <div class="table-wrapper">
+        <table class="audio-table scenario-table">
+            <thead>
+                <tr>
+                    <th>Sample</th>
+                    <th>Original</th>
+                    <th>Watermarked</th>
+                    <th>Attack Type</th>
+                    <th>Perturbed Audio</th>
+                    <th>HiFi-WaR Output</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td rowspan=15><strong>Sample 0</strong></td><td rowspan=15><audio controls preload='none'><source src='audio/original/0.wav' type='audio/wav'></audio></td><td rowspan=15><audio controls preload='none'><source src='audio/timbre/0_1110100111_23.8328_timbre.wav' type='audio/wav'></audio></td><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Background Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_background_noise_snr_20dB/background_noise_0.wav' type='audio/wav'></audio></td><td rowspan=15><audio controls preload='none'><source src='audio/timbre/recon_audio0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Echo (0.5 s decay)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_echo_decay_0_5s/echo_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Gaussian Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_gaussian_noise_snr_20dB/gaussian_noise_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>High-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_highpass_ratio_0_3/highpass_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Low-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_lowpass_ratio_0_3/lowpass_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>16-bit Quantization</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_quantization_bits_16/quantization_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Resample 11.025 kHz</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_resample_samplerate_11025Hz/resample_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Smoothing (window=14)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_smooth_window_size_14/smooth_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Time-stretch 1.1×</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_time_stretch_speed_1_1/time_stretch_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Complex Scaling (stretch 1.05, pitch 0.5)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_complex_scaling_stretch-pitch_(1_05,_0_5)/complex_scaling_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>FastSpeech2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_fastspeech2_hifigan_model_defaultFS2-HiFiGAN/fastspeech2_hifigan_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Replay Sim (RIR + Noise)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_rerecord_sim_defaultRIR+Noise/rerecord_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>DCCRN-based Speech Enhancement</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_se_model_defaultSepformer/se_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Tacotron2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_tacotron2_hifigan_model_defaultT2-HiFiGAN/tacotron2_hifigan_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>VITS (VC)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_vits_model_defaultVITS/vits_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td rowspan=15><strong>Sample 1</strong></td><td rowspan=15><audio controls preload='none'><source src='audio/original/1.wav' type='audio/wav'></audio></td><td rowspan=15><audio controls preload='none'><source src='audio/timbre/1_0101111011_26.7618_timbre.wav' type='audio/wav'></audio></td><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Background Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_background_noise_snr_20dB/background_noise_1.wav' type='audio/wav'></audio></td><td rowspan=15><audio controls preload='none'><source src='audio/timbre/recon_audio1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Echo (0.5 s decay)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_echo_decay_0_5s/echo_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Gaussian Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_gaussian_noise_snr_20dB/gaussian_noise_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>High-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_highpass_ratio_0_3/highpass_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Low-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_lowpass_ratio_0_3/lowpass_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>16-bit Quantization</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_quantization_bits_16/quantization_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Resample 11.025 kHz</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_resample_samplerate_11025Hz/resample_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Smoothing (window=14)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_smooth_window_size_14/smooth_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Time-stretch 1.1×</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_time_stretch_speed_1_1/time_stretch_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Complex Scaling (stretch 1.05, pitch 0.5)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_complex_scaling_stretch-pitch_(1_05,_0_5)/complex_scaling_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>FastSpeech2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_fastspeech2_hifigan_model_defaultFS2-HiFiGAN/fastspeech2_hifigan_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Replay Sim (RIR + Noise)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_rerecord_sim_defaultRIR+Noise/rerecord_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>DCCRN-based Speech Enhancement</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_se_model_defaultSepformer/se_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Tacotron2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_tacotron2_hifigan_model_defaultT2-HiFiGAN/tacotron2_hifigan_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>VITS (VC)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_vits_model_defaultVITS/vits_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td rowspan=15><strong>Sample 2</strong></td><td rowspan=15><audio controls preload='none'><source src='audio/original/2.wav' type='audio/wav'></audio></td><td rowspan=15><audio controls preload='none'><source src='audio/timbre/2_0011011000_24.0241_timbre.wav' type='audio/wav'></audio></td><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Background Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_background_noise_snr_20dB/background_noise_2.wav' type='audio/wav'></audio></td><td rowspan=15><audio controls preload='none'><source src='audio/timbre/recon_audio2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Echo (0.5 s decay)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_echo_decay_0_5s/echo_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Gaussian Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_gaussian_noise_snr_20dB/gaussian_noise_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>High-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_highpass_ratio_0_3/highpass_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Low-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_lowpass_ratio_0_3/lowpass_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>16-bit Quantization</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_quantization_bits_16/quantization_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Resample 11.025 kHz</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_resample_samplerate_11025Hz/resample_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Smoothing (window=14)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_smooth_window_size_14/smooth_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Time-stretch 1.1×</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_time_stretch_speed_1_1/time_stretch_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Complex Scaling (stretch 1.05, pitch 0.5)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_complex_scaling_stretch-pitch_(1_05,_0_5)/complex_scaling_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>FastSpeech2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_fastspeech2_hifigan_model_defaultFS2-HiFiGAN/fastspeech2_hifigan_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Replay Sim (RIR + Noise)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_rerecord_sim_defaultRIR+Noise/rerecord_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>DCCRN-based Speech Enhancement</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_se_model_defaultSepformer/se_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Tacotron2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_tacotron2_hifigan_model_defaultT2-HiFiGAN/tacotron2_hifigan_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>VITS (VC)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_vits_model_defaultVITS/vits_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td rowspan=15><strong>Sample 3</strong></td><td rowspan=15><audio controls preload='none'><source src='audio/original/3.wav' type='audio/wav'></audio></td><td rowspan=15><audio controls preload='none'><source src='audio/timbre/3_0111000110_26.5580_timbre.wav' type='audio/wav'></audio></td><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Background Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_background_noise_snr_20dB/background_noise_3.wav' type='audio/wav'></audio></td><td rowspan=15><audio controls preload='none'><source src='audio/timbre/recon_audio3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Echo (0.5 s decay)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_echo_decay_0_5s/echo_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Gaussian Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_gaussian_noise_snr_20dB/gaussian_noise_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>High-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_highpass_ratio_0_3/highpass_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Low-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_lowpass_ratio_0_3/lowpass_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>16-bit Quantization</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_quantization_bits_16/quantization_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Resample 11.025 kHz</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_resample_samplerate_11025Hz/resample_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Smoothing (window=14)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_smooth_window_size_14/smooth_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Time-stretch 1.1×</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_time_stretch_speed_1_1/time_stretch_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Complex Scaling (stretch 1.05, pitch 0.5)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_complex_scaling_stretch-pitch_(1_05,_0_5)/complex_scaling_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>FastSpeech2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_fastspeech2_hifigan_model_defaultFS2-HiFiGAN/fastspeech2_hifigan_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Replay Sim (RIR + Noise)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_rerecord_sim_defaultRIR+Noise/rerecord_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>DCCRN-based Speech Enhancement</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_se_model_defaultSepformer/se_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Tacotron2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_tacotron2_hifigan_model_defaultT2-HiFiGAN/tacotron2_hifigan_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>VITS (VC)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_vits_model_defaultVITS/vits_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td rowspan=15><strong>Sample 4</strong></td><td rowspan=15><audio controls preload='none'><source src='audio/original/4.wav' type='audio/wav'></audio></td><td rowspan=15><audio controls preload='none'><source src='audio/timbre/4_1100001000_25.1949_timbre.wav' type='audio/wav'></audio></td><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Background Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_background_noise_snr_20dB/background_noise_4.wav' type='audio/wav'></audio></td><td rowspan=15><audio controls preload='none'><source src='audio/timbre/recon_audio4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Echo (0.5 s decay)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_echo_decay_0_5s/echo_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Gaussian Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_gaussian_noise_snr_20dB/gaussian_noise_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>High-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_highpass_ratio_0_3/highpass_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Low-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_lowpass_ratio_0_3/lowpass_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>16-bit Quantization</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_quantization_bits_16/quantization_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Resample 11.025 kHz</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_resample_samplerate_11025Hz/resample_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Smoothing (window=14)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_smooth_window_size_14/smooth_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Time-stretch 1.1×</span></td><td><audio controls preload='none'><source src='audio/log_timbre_LibriSpeech_max_5s/common_pert_time_stretch_speed_1_1/time_stretch_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Complex Scaling (stretch 1.05, pitch 0.5)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_complex_scaling_stretch-pitch_(1_05,_0_5)/complex_scaling_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>FastSpeech2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_fastspeech2_hifigan_model_defaultFS2-HiFiGAN/fastspeech2_hifigan_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Replay Sim (RIR + Noise)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_rerecord_sim_defaultRIR+Noise/rerecord_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>DCCRN-based Speech Enhancement</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_se_model_defaultSepformer/se_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Tacotron2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_tacotron2_hifigan_model_defaultT2-HiFiGAN/tacotron2_hifigan_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>VITS (VC)</span></td><td><audio controls preload='none'><source src='audio/log_timbre_advanced_LibriSpeech/advanced_pert_vits_model_defaultVITS/vits_4.wav' type='audio/wav'></audio></td></tr>
+            </tbody>
+        </table>
+    </div>
+    
+    </section>
+    
+    <section id="audio-wavmark" class="audio-section tab-panel">
+        <h2>WavMark Watermark (32-bit payload)</h2>
+    
+        
+    <div class="table-wrapper">
+        <table class="audio-table scenario-table">
+            <thead>
+                <tr>
+                    <th>Sample</th>
+                    <th>Original</th>
+                    <th>Watermarked</th>
+                    <th>Attack Type</th>
+                    <th>Perturbed Audio</th>
+                    <th>HiFi-WaR Output</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td rowspan=16><strong>Sample 0</strong></td><td rowspan=16><audio controls preload='none'><source src='audio/original/0.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/wavmark/0_1111010010100010_35.3692_wavmark.wav' type='audio/wav'></audio></td><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Background Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_background_noise_snr_20dB/background_noise_0.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/wavmark/recon_audio0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Echo (0.5 s decay)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_echo_decay_0_5s/echo_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Gaussian Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_gaussian_noise_snr_20dB/gaussian_noise_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>High-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_highpass_ratio_0_3/highpass_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Low-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_lowpass_ratio_0_3/lowpass_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>MP3 (64 kbps)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_mp3_bitrate_64kbps/mp3_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>16-bit Quantization</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_quantization_bits_16/quantization_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Resample 11.025 kHz</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_resample_samplerate_11025Hz/resample_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Smoothing (window=14)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_smooth_window_size_14/smooth_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Time-stretch 1.1×</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_time_stretch_speed_1_1/time_stretch_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Complex Scaling (stretch 1.05, pitch 0.5)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_complex_scaling_stretch-pitch_(1_05,_0_5)/complex_scaling_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>FastSpeech2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_fastspeech2_hifigan_model_defaultFS2-HiFiGAN/fastspeech2_hifigan_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Replay Sim (RIR + Noise)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_rerecord_sim_defaultRIR+Noise/rerecord_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>DCCRN-based Speech Enhancement</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_se_model_defaultSepformer/se_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Tacotron2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_tacotron2_hifigan_model_defaultT2-HiFiGAN/tacotron2_hifigan_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>VITS (VC)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_vits_model_defaultVITS/vits_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td rowspan=16><strong>Sample 1</strong></td><td rowspan=16><audio controls preload='none'><source src='audio/original/1.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/wavmark/1_0100101101100111_37.9771_wavmark.wav' type='audio/wav'></audio></td><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Background Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_background_noise_snr_20dB/background_noise_1.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/wavmark/recon_audio1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Echo (0.5 s decay)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_echo_decay_0_5s/echo_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Gaussian Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_gaussian_noise_snr_20dB/gaussian_noise_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>High-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_highpass_ratio_0_3/highpass_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Low-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_lowpass_ratio_0_3/lowpass_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>MP3 (64 kbps)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_mp3_bitrate_64kbps/mp3_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>16-bit Quantization</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_quantization_bits_16/quantization_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Resample 11.025 kHz</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_resample_samplerate_11025Hz/resample_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Smoothing (window=14)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_smooth_window_size_14/smooth_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Time-stretch 1.1×</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_time_stretch_speed_1_1/time_stretch_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Complex Scaling (stretch 1.05, pitch 0.5)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_complex_scaling_stretch-pitch_(1_05,_0_5)/complex_scaling_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>FastSpeech2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_fastspeech2_hifigan_model_defaultFS2-HiFiGAN/fastspeech2_hifigan_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Replay Sim (RIR + Noise)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_rerecord_sim_defaultRIR+Noise/rerecord_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>DCCRN-based Speech Enhancement</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_se_model_defaultSepformer/se_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Tacotron2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_tacotron2_hifigan_model_defaultT2-HiFiGAN/tacotron2_hifigan_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>VITS (VC)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_vits_model_defaultVITS/vits_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td rowspan=16><strong>Sample 2</strong></td><td rowspan=16><audio controls preload='none'><source src='audio/original/2.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/wavmark/2_1011000010010011_35.3995_wavmark.wav' type='audio/wav'></audio></td><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Background Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_background_noise_snr_20dB/background_noise_2.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/wavmark/recon_audio2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Echo (0.5 s decay)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_echo_decay_0_5s/echo_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Gaussian Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_gaussian_noise_snr_20dB/gaussian_noise_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>High-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_highpass_ratio_0_3/highpass_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Low-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_lowpass_ratio_0_3/lowpass_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>MP3 (64 kbps)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_mp3_bitrate_64kbps/mp3_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>16-bit Quantization</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_quantization_bits_16/quantization_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Resample 11.025 kHz</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_resample_samplerate_11025Hz/resample_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Smoothing (window=14)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_smooth_window_size_14/smooth_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Time-stretch 1.1×</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_time_stretch_speed_1_1/time_stretch_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Complex Scaling (stretch 1.05, pitch 0.5)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_complex_scaling_stretch-pitch_(1_05,_0_5)/complex_scaling_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>FastSpeech2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_fastspeech2_hifigan_model_defaultFS2-HiFiGAN/fastspeech2_hifigan_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Replay Sim (RIR + Noise)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_rerecord_sim_defaultRIR+Noise/rerecord_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>DCCRN-based Speech Enhancement</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_se_model_defaultSepformer/se_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Tacotron2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_tacotron2_hifigan_model_defaultT2-HiFiGAN/tacotron2_hifigan_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>VITS (VC)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_vits_model_defaultVITS/vits_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td rowspan=16><strong>Sample 3</strong></td><td rowspan=16><audio controls preload='none'><source src='audio/original/3.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/wavmark/3_1011000111110000_39.3056_wavmark.wav' type='audio/wav'></audio></td><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Background Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_background_noise_snr_20dB/background_noise_3.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/wavmark/recon_audio3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Echo (0.5 s decay)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_echo_decay_0_5s/echo_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Gaussian Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_gaussian_noise_snr_20dB/gaussian_noise_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>High-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_highpass_ratio_0_3/highpass_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Low-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_lowpass_ratio_0_3/lowpass_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>MP3 (64 kbps)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_mp3_bitrate_64kbps/mp3_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>16-bit Quantization</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_quantization_bits_16/quantization_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Resample 11.025 kHz</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_resample_samplerate_11025Hz/resample_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Smoothing (window=14)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_smooth_window_size_14/smooth_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Time-stretch 1.1×</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_time_stretch_speed_1_1/time_stretch_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Complex Scaling (stretch 1.05, pitch 0.5)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_complex_scaling_stretch-pitch_(1_05,_0_5)/complex_scaling_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>FastSpeech2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_fastspeech2_hifigan_model_defaultFS2-HiFiGAN/fastspeech2_hifigan_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Replay Sim (RIR + Noise)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_rerecord_sim_defaultRIR+Noise/rerecord_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>DCCRN-based Speech Enhancement</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_se_model_defaultSepformer/se_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Tacotron2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_tacotron2_hifigan_model_defaultT2-HiFiGAN/tacotron2_hifigan_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>VITS (VC)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_vits_model_defaultVITS/vits_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td rowspan=16><strong>Sample 4</strong></td><td rowspan=16><audio controls preload='none'><source src='audio/original/4.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/wavmark/4_0110101110100001_36.3479_wavmark.wav' type='audio/wav'></audio></td><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Background Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_background_noise_snr_20dB/background_noise_4.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/wavmark/recon_audio4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Echo (0.5 s decay)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_echo_decay_0_5s/echo_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Gaussian Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_gaussian_noise_snr_20dB/gaussian_noise_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>High-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_highpass_ratio_0_3/highpass_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Low-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_lowpass_ratio_0_3/lowpass_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>MP3 (64 kbps)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_mp3_bitrate_64kbps/mp3_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>16-bit Quantization</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_quantization_bits_16/quantization_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Resample 11.025 kHz</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_resample_samplerate_11025Hz/resample_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Smoothing (window=14)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_smooth_window_size_14/smooth_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Time-stretch 1.1×</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_LibriSpeech_max_5s/common_pert_time_stretch_speed_1_1/time_stretch_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Complex Scaling (stretch 1.05, pitch 0.5)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_complex_scaling_stretch-pitch_(1_05,_0_5)/complex_scaling_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>FastSpeech2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_fastspeech2_hifigan_model_defaultFS2-HiFiGAN/fastspeech2_hifigan_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Replay Sim (RIR + Noise)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_rerecord_sim_defaultRIR+Noise/rerecord_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>DCCRN-based Speech Enhancement</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_se_model_defaultSepformer/se_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Tacotron2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_tacotron2_hifigan_model_defaultT2-HiFiGAN/tacotron2_hifigan_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>VITS (VC)</span></td><td><audio controls preload='none'><source src='audio/log_wavmark_advanced_LibriSpeech/advanced_pert_vits_model_defaultVITS/vits_4.wav' type='audio/wav'></audio></td></tr>
+            </tbody>
+        </table>
+    </div>
+    
+    </section>
+    
+    <section id="audio-audioseal" class="audio-section tab-panel">
+        <h2>AudioSeal Watermark (16-bit payload)</h2>
+      
+    <div class="table-wrapper">
+        <table class="audio-table scenario-table">
+            <thead>
+                <tr>
+                    <th>Sample</th>
+                    <th>Original</th>
+                    <th>Watermarked</th>
+                    <th>Attack Type</th>
+                    <th>Perturbed Audio</th>
+                    <th>HiFi-WaR Output</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td rowspan=16><strong>Sample 0</strong></td><td rowspan=16><audio controls preload='none'><source src='audio/original/0.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/audioseal/0_1110100100011001_23.2577_audioseal.wav' type='audio/wav'></audio></td><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Background Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_background_noise_snr_20dB/background_noise_0.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/audioseal/recon_audio0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Echo (0.5 s decay)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_echo_decay_0_5s/echo_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Gaussian Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_gaussian_noise_snr_20dB/gaussian_noise_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>High-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_highpass_ratio_0_3/highpass_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Low-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_lowpass_ratio_0_3/lowpass_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>MP3 (64 kbps)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_mp3_bitrate_64kbps/mp3_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>16-bit Quantization</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_quantization_bits_16/quantization_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Resample 11.025 kHz</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_resample_samplerate_11025Hz/resample_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Smoothing (window=14)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_smooth_window_size_14/smooth_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Time-stretch 1.1×</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_time_stretch_speed_1_1/time_stretch_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Complex Scaling (stretch 1.05, pitch 0.5)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_complex_scaling_stretch-pitch_(1_05,_0_5)/complex_scaling_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>FastSpeech2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_fastspeech2_hifigan_model_defaultFS2-HiFiGAN/fastspeech2_hifigan_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Replay Sim (RIR + Noise)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_rerecord_sim_defaultRIR+Noise/rerecord_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>DCCRN-based Speech Enhancement</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_se_model_defaultSepformer/se_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Tacotron2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_tacotron2_hifigan_model_defaultT2-HiFiGAN/tacotron2_hifigan_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>VITS (VC)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_vits_model_defaultVITS/vits_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td rowspan=16><strong>Sample 1</strong></td><td rowspan=16><audio controls preload='none'><source src='audio/original/1.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/audioseal/1_1100011001000010_32.4330_audioseal.wav' type='audio/wav'></audio></td><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Background Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_background_noise_snr_20dB/background_noise_1.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/audioseal/recon_audio1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Echo (0.5 s decay)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_echo_decay_0_5s/echo_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Gaussian Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_gaussian_noise_snr_20dB/gaussian_noise_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>High-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_highpass_ratio_0_3/highpass_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Low-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_lowpass_ratio_0_3/lowpass_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>MP3 (64 kbps)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_mp3_bitrate_64kbps/mp3_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>16-bit Quantization</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_quantization_bits_16/quantization_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Resample 11.025 kHz</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_resample_samplerate_11025Hz/resample_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Smoothing (window=14)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_smooth_window_size_14/smooth_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Time-stretch 1.1×</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_time_stretch_speed_1_1/time_stretch_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Complex Scaling (stretch 1.05, pitch 0.5)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_complex_scaling_stretch-pitch_(1_05,_0_5)/complex_scaling_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>FastSpeech2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_fastspeech2_hifigan_model_defaultFS2-HiFiGAN/fastspeech2_hifigan_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Replay Sim (RIR + Noise)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_rerecord_sim_defaultRIR+Noise/rerecord_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>DCCRN-based Speech Enhancement</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_se_model_defaultSepformer/se_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Tacotron2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_tacotron2_hifigan_model_defaultT2-HiFiGAN/tacotron2_hifigan_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>VITS (VC)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_vits_model_defaultVITS/vits_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td rowspan=16><strong>Sample 2</strong></td><td rowspan=16><audio controls preload='none'><source src='audio/original/2.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/audioseal/2_1111101100110001_23.8642_audioseal.wav' type='audio/wav'></audio></td><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Background Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_background_noise_snr_20dB/background_noise_2.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/audioseal/recon_audio2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Echo (0.5 s decay)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_echo_decay_0_5s/echo_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Gaussian Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_gaussian_noise_snr_20dB/gaussian_noise_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>High-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_highpass_ratio_0_3/highpass_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Low-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_lowpass_ratio_0_3/lowpass_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>MP3 (64 kbps)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_mp3_bitrate_64kbps/mp3_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>16-bit Quantization</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_quantization_bits_16/quantization_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Resample 11.025 kHz</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_resample_samplerate_11025Hz/resample_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Smoothing (window=14)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_smooth_window_size_14/smooth_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Time-stretch 1.1×</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_time_stretch_speed_1_1/time_stretch_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Complex Scaling (stretch 1.05, pitch 0.5)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_complex_scaling_stretch-pitch_(1_05,_0_5)/complex_scaling_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>FastSpeech2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_fastspeech2_hifigan_model_defaultFS2-HiFiGAN/fastspeech2_hifigan_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Replay Sim (RIR + Noise)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_rerecord_sim_defaultRIR+Noise/rerecord_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>DCCRN-based Speech Enhancement</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_se_model_defaultSepformer/se_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Tacotron2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_tacotron2_hifigan_model_defaultT2-HiFiGAN/tacotron2_hifigan_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>VITS (VC)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_vits_model_defaultVITS/vits_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td rowspan=16><strong>Sample 3</strong></td><td rowspan=16><audio controls preload='none'><source src='audio/original/3.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/audioseal/3_1000110110111111_34.3657_audioseal.wav' type='audio/wav'></audio></td><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Background Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_background_noise_snr_20dB/background_noise_3.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/audioseal/recon_audio3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Echo (0.5 s decay)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_echo_decay_0_5s/echo_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Gaussian Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_gaussian_noise_snr_20dB/gaussian_noise_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>High-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_highpass_ratio_0_3/highpass_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Low-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_lowpass_ratio_0_3/lowpass_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>MP3 (64 kbps)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_mp3_bitrate_64kbps/mp3_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>16-bit Quantization</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_quantization_bits_16/quantization_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Resample 11.025 kHz</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_resample_samplerate_11025Hz/resample_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Smoothing (window=14)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_smooth_window_size_14/smooth_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Time-stretch 1.1×</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_time_stretch_speed_1_1/time_stretch_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Complex Scaling (stretch 1.05, pitch 0.5)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_complex_scaling_stretch-pitch_(1_05,_0_5)/complex_scaling_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>FastSpeech2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_fastspeech2_hifigan_model_defaultFS2-HiFiGAN/fastspeech2_hifigan_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Replay Sim (RIR + Noise)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_rerecord_sim_defaultRIR+Noise/rerecord_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>DCCRN-based Speech Enhancement</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_se_model_defaultSepformer/se_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Tacotron2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_tacotron2_hifigan_model_defaultT2-HiFiGAN/tacotron2_hifigan_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>VITS (VC)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_vits_model_defaultVITS/vits_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td rowspan=16><strong>Sample 4</strong></td><td rowspan=16><audio controls preload='none'><source src='audio/original/4.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/audioseal/4_1001100101011000_23.9972_audioseal.wav' type='audio/wav'></audio></td><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Background Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_background_noise_snr_20dB/background_noise_4.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/audioseal/recon_audio4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Echo (0.5 s decay)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_echo_decay_0_5s/echo_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Gaussian Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_gaussian_noise_snr_20dB/gaussian_noise_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>High-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_highpass_ratio_0_3/highpass_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Low-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_lowpass_ratio_0_3/lowpass_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>MP3 (64 kbps)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_mp3_bitrate_64kbps/mp3_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>16-bit Quantization</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_quantization_bits_16/quantization_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Resample 11.025 kHz</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_resample_samplerate_11025Hz/resample_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Smoothing (window=14)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_smooth_window_size_14/smooth_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Time-stretch 1.1×</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_LibriSpeech_max_5s/common_pert_time_stretch_speed_1_1/time_stretch_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Complex Scaling (stretch 1.05, pitch 0.5)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_complex_scaling_stretch-pitch_(1_05,_0_5)/complex_scaling_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>FastSpeech2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_fastspeech2_hifigan_model_defaultFS2-HiFiGAN/fastspeech2_hifigan_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Replay Sim (RIR + Noise)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_rerecord_sim_defaultRIR+Noise/rerecord_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>DCCRN-based Speech Enhancement</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_se_model_defaultSepformer/se_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Tacotron2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_tacotron2_hifigan_model_defaultT2-HiFiGAN/tacotron2_hifigan_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>VITS (VC)</span></td><td><audio controls preload='none'><source src='audio/log_audioseal_advanced_LibriSpeech/advanced_pert_vits_model_defaultVITS/vits_4.wav' type='audio/wav'></audio></td></tr>
+            </tbody>
+        </table>
+    </div>
+    
+    </section>
+    
+    <section id="audio-groot" class="audio-section tab-panel">
+        <h2>Groot Watermark (DiffWave carrier)</h2>
+     
+    <div class="table-wrapper">
+        <table class="audio-table scenario-table">
+            <thead>
+                <tr>
+                    <th>Sample</th>
+                    <th>Original</th>
+                    <th>Watermarked</th>
+                    <th>Attack Type</th>
+                    <th>Perturbed Audio</th>
+                    <th>HiFi-WaR Output</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td rowspan=16><strong>Sample 0</strong></td><td rowspan=16><audio controls preload='none'><source src='audio/original/0.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/groot/0_0000011101010101010110100000100001101011001111001011101000110010100001010110011010111011101010001001_-3.0257_groot.wav' type='audio/wav'></audio></td><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Background Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_background_noise_snr_20dB/background_noise_0.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/groot/recon_audio0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Echo (0.5 s delay)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_echo_delay_0_5s/echo_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Gaussian Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_gaussian_noise_snr_20dB/gaussian_noise_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>High-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_highpass_ratio_0_3/highpass_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Low-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_lowpass_ratio_0_3/lowpass_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>MP3 (64 kbps)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_mp3_bitrate_64kbps/mp3_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>16-bit Quantization</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_quantization_bits_16/quantization_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Resample 11.025 kHz</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_resample_sr_11025Hz/resample_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Smoothing (window=14)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_smooth_window_size_14/smooth_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Time-stretch 1.1×</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_time_stretch_speed_1_1/time_stretch_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Complex Scaling (stretch 1.05, pitch 0.5)</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_complex_scaling_stretch-pitch_(1_05,_0_5)/complex_scaling_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>FastSpeech2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_fastspeech2_hifigan_model_defaultFS2-HiFiGAN/fastspeech2_hifigan_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Replay Sim (RIR + Noise)</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_rerecord_sim_defaultRIR+Noise/rerecord_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>DCCRN-based Speech Enhancement</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_se_model_defaultSepformer/se_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Tacotron2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_tacotron2_hifigan_model_defaultT2-HiFiGAN/tacotron2_hifigan_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>VITS (VC)</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_vits_model_defaultVITS/vits_0.wav' type='audio/wav'></audio></td></tr>
+<tr><td rowspan=16><strong>Sample 1</strong></td><td rowspan=16><audio controls preload='none'><source src='audio/original/1.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/groot/1_0000011101010101010110100000100001101011001111001011101000110010100001010110011010111011101010001001_0.4267_groot.wav' type='audio/wav'></audio></td><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Background Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_background_noise_snr_20dB/background_noise_1.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/groot/recon_audio1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Echo (0.5 s delay)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_echo_delay_0_5s/echo_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Gaussian Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_gaussian_noise_snr_20dB/gaussian_noise_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>High-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_highpass_ratio_0_3/highpass_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Low-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_lowpass_ratio_0_3/lowpass_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>MP3 (64 kbps)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_mp3_bitrate_64kbps/mp3_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>16-bit Quantization</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_quantization_bits_16/quantization_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Resample 11.025 kHz</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_resample_sr_11025Hz/resample_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Smoothing (window=14)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_smooth_window_size_14/smooth_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Time-stretch 1.1×</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_time_stretch_speed_1_1/time_stretch_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Complex Scaling (stretch 1.05, pitch 0.5)</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_complex_scaling_stretch-pitch_(1_05,_0_5)/complex_scaling_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>FastSpeech2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_fastspeech2_hifigan_model_defaultFS2-HiFiGAN/fastspeech2_hifigan_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Replay Sim (RIR + Noise)</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_rerecord_sim_defaultRIR+Noise/rerecord_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>DCCRN-based Speech Enhancement</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_se_model_defaultSepformer/se_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Tacotron2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_tacotron2_hifigan_model_defaultT2-HiFiGAN/tacotron2_hifigan_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>VITS (VC)</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_vits_model_defaultVITS/vits_1.wav' type='audio/wav'></audio></td></tr>
+<tr><td rowspan=16><strong>Sample 2</strong></td><td rowspan=16><audio controls preload='none'><source src='audio/original/2.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/groot/2_0000011101010101010110100000100001101011001111001011101000110010100001010110011010111011101010001001_-0.6025_groot.wav' type='audio/wav'></audio></td><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Background Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_background_noise_snr_20dB/background_noise_2.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/groot/recon_audio2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Echo (0.5 s delay)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_echo_delay_0_5s/echo_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Gaussian Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_gaussian_noise_snr_20dB/gaussian_noise_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>High-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_highpass_ratio_0_3/highpass_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Low-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_lowpass_ratio_0_3/lowpass_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>MP3 (64 kbps)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_mp3_bitrate_64kbps/mp3_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>16-bit Quantization</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_quantization_bits_16/quantization_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Resample 11.025 kHz</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_resample_sr_11025Hz/resample_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Smoothing (window=14)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_smooth_window_size_14/smooth_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Time-stretch 1.1×</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_time_stretch_speed_1_1/time_stretch_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Complex Scaling (stretch 1.05, pitch 0.5)</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_complex_scaling_stretch-pitch_(1_05,_0_5)/complex_scaling_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>FastSpeech2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_fastspeech2_hifigan_model_defaultFS2-HiFiGAN/fastspeech2_hifigan_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Replay Sim (RIR + Noise)</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_rerecord_sim_defaultRIR+Noise/rerecord_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>DCCRN-based Speech Enhancement</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_se_model_defaultSepformer/se_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Tacotron2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_tacotron2_hifigan_model_defaultT2-HiFiGAN/tacotron2_hifigan_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>VITS (VC)</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_vits_model_defaultVITS/vits_2.wav' type='audio/wav'></audio></td></tr>
+<tr><td rowspan=16><strong>Sample 3</strong></td><td rowspan=16><audio controls preload='none'><source src='audio/original/3.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/groot/3_0000011101010101010110100000100001101011001111001011101000110010100001010110011010111011101010001001_-1.9324_groot.wav' type='audio/wav'></audio></td><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Background Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_background_noise_snr_20dB/background_noise_3.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/groot/recon_audio3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Echo (0.5 s delay)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_echo_delay_0_5s/echo_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Gaussian Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_gaussian_noise_snr_20dB/gaussian_noise_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>High-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_highpass_ratio_0_3/highpass_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Low-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_lowpass_ratio_0_3/lowpass_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>MP3 (64 kbps)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_mp3_bitrate_64kbps/mp3_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>16-bit Quantization</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_quantization_bits_16/quantization_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Resample 11.025 kHz</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_resample_sr_11025Hz/resample_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Smoothing (window=14)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_smooth_window_size_14/smooth_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Time-stretch 1.1×</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_time_stretch_speed_1_1/time_stretch_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Complex Scaling (stretch 1.05, pitch 0.5)</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_complex_scaling_stretch-pitch_(1_05,_0_5)/complex_scaling_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>FastSpeech2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_fastspeech2_hifigan_model_defaultFS2-HiFiGAN/fastspeech2_hifigan_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Replay Sim (RIR + Noise)</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_rerecord_sim_defaultRIR+Noise/rerecord_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>DCCRN-based Speech Enhancement</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_se_model_defaultSepformer/se_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Tacotron2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_tacotron2_hifigan_model_defaultT2-HiFiGAN/tacotron2_hifigan_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>VITS (VC)</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_vits_model_defaultVITS/vits_3.wav' type='audio/wav'></audio></td></tr>
+<tr><td rowspan=16><strong>Sample 4</strong></td><td rowspan=16><audio controls preload='none'><source src='audio/original/4.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/groot/4_0000011101010101010110100000100001101011001111001011101000110010100001010110011010111011101010001001_-2.0643_groot.wav' type='audio/wav'></audio></td><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Background Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_background_noise_snr_20dB/background_noise_4.wav' type='audio/wav'></audio></td><td rowspan=16><audio controls preload='none'><source src='audio/groot/recon_audio4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Echo (0.5 s delay)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_echo_delay_0_5s/echo_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Gaussian Noise (20 dB)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_gaussian_noise_snr_20dB/gaussian_noise_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>High-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_highpass_ratio_0_3/highpass_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Low-pass Filter (0.3)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_lowpass_ratio_0_3/lowpass_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>MP3 (64 kbps)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_mp3_bitrate_64kbps/mp3_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>16-bit Quantization</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_quantization_bits_16/quantization_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Resample 11.025 kHz</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_resample_sr_11025Hz/resample_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Smoothing (window=14)</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_smooth_window_size_14/smooth_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-common">Common</span><span class='attack-label'>Time-stretch 1.1×</span></td><td><audio controls preload='none'><source src='audio/log_groot_LibriSpeech/common_pert_time_stretch_speed_1_1/time_stretch_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Complex Scaling (stretch 1.05, pitch 0.5)</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_complex_scaling_stretch-pitch_(1_05,_0_5)/complex_scaling_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>FastSpeech2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_fastspeech2_hifigan_model_defaultFS2-HiFiGAN/fastspeech2_hifigan_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Replay Sim (RIR + Noise)</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_rerecord_sim_defaultRIR+Noise/rerecord_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>DCCRN-based Speech Enhancement</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_se_model_defaultSepformer/se_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>Tacotron2 + HiFi-GAN (VC)</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_tacotron2_hifigan_model_defaultT2-HiFiGAN/tacotron2_hifigan_4.wav' type='audio/wav'></audio></td></tr>
+<tr><td><span class="attack-badge badge-advanced">Advanced</span><span class='attack-label'>VITS (VC)</span></td><td><audio controls preload='none'><source src='audio/log_groot_advanced_LibriSpeech/advanced_pert_vits_model_defaultVITS/vits_4.wav' type='audio/wav'></audio></td></tr>
+            </tbody>
+        </table>
+    </div>
+    
+    </section>
+    
+</div>
+<script>
+const tabButtons = document.querySelectorAll('.tab-btn');
+const tabPanels = document.querySelectorAll('.tab-panel');
+
+tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const target = btn.dataset.target;
+        tabButtons.forEach(b => b.classList.remove('active'));
+        tabPanels.forEach(panel => panel.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(target).classList.add('active');
+    });
+});
+</script>
+</body>
+</html>
